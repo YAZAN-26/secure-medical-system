@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>منظومة السجلات الطبية الذكية</title>
+    <!-- استدعاء Bootstrap 5 للغة العربية -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+</head>
+<body class="bg-light">
+
+    <!-- شريط التنقل العلوي -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">🏥 النظام الطبي الآمن</a>
+            <div class="d-flex align-items-center">
+                <span class="text-white me-3 fs-6">مرحباً، <b>{{ user }}</b> (<span class="badge bg-info text-dark">{{ role }}</span>)</span>
+                <a href="/profile" class="btn btn-outline-light btn-sm me-2">الملف الشخصي</a>
+                <a href="/logout" class="btn btn-danger btn-sm">تسجيل الخروج</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5" style="max-width: 900px;">
+
+        <!-- قسم رفع الملفات -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body p-4">
+                <h4 class="card-title text-primary mb-3">رفع وتشفير سجل طبي جديد</h4>
+                <form action="/upload" method="POST" enctype="multipart/form-data" class="row g-3 align-items-center">
+                    <div class="col-auto flex-grow-1">
+                        <input class="form-control" type="file" name="medical_file" required>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-success px-4">رفع وتشفير 🔒</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- قسم البحث والفلترة -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body p-3">
+                <form method="GET" action="/" class="row g-2">
+                    <div class="col">
+                        <input type="text" name="search" class="form-control" placeholder="ابحث باسم الملف أو اسم الرافع..." value="{{ search }}">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">بحث 🔍</button>
+                        <a href="/" class="btn btn-secondary">إعادة ضبط</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- جدول السجلات الطبية -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body p-4">
+                <h4 class="card-title text-dark mb-3">📋 السجلات الطبية المتاحة</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>اسم الملف</th>
+                                <th>الملف المشفر</th>
+                                <th>الرافع</th>
+                                <th>وقت الرفع</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if records %}
+                                {% for record in records %}
+                                    <tr>
+                                        <td class="fw-semibold">{{ record[1] }}</td>
+                                        <td class="text-muted font-monospace small" style="direction: ltr;">{{ record[2] }}</td>
+                                        <td><span class="badge bg-secondary">{{ record[3] }}</span></td>
+                                        <td class="small">{{ record[4] }}</td>
+                                        <td>
+                                            <a class="btn btn-outline-primary btn-sm" href="/download/{{ record[2] }}">فك وتنزيل</a>
+                                            <a class="btn btn-outline-danger btn-sm" href="/delete/{{ record[0] }}" onclick="return confirm('هل أنت متأكد من حذف هذا السجل نهائياً؟');">حذف</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-muted py-4">لا توجد سجلات مطابقة للبحث أو مرفوعة حتى الآن.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- لوحة مراقبة النشاطات (للأطباء فقط) -->
+        {% if role == 'Doctor' %}
+            <div class="card shadow-sm border-0 bg-white">
+                <div class="card-body p-4">
+                    <h4 class="card-title text-warning mb-3">🛡️ سجل النشاطات والعمليات الأمنية (Audit Trail)</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped small align-middle text-center">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th>المستخدم</th>
+                                    <th>العملية الأمنية</th>
+                                    <th>التاريخ والوقت</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for log in logs %}
+                                    <tr>
+                                        <td class="fw-bold">{{ log[0] }}</td>
+                                        <td>{{ log[1] }}</td>
+                                        <td class="text-muted">{{ log[2] }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>

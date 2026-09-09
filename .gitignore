@@ -1,0 +1,6 @@
+medical_system.db
+secret.key
+uploads/
+encrypted_files/
+__pycache__/
+instance/

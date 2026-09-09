@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>الملف الشخصي - النظام الطبي</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">🏥 النظام الطبي الآمن</a>
+            <a href="/" class="btn btn-outline-light btn-sm">العودة للوحة الرئيسية</a>
+        </div>
+    </nav>
+
+    <div class="container my-5" style="max-width: 700px;">
+        <div class="card shadow-sm border-0 p-4">
+            <h3 class="text-primary mb-3">👤 الملف الشخصي للمستخدم</h3>
+            <hr>
+            <p><strong>اسم المستخدم:</strong> <span class="text-dark">{{ user }}</span></p>
+            <p><strong>نوع الصلاحية:</strong> <span class="badge bg-info text-dark">{{ role }}</span></p>
+            <p><strong>إجمالي السجلات المرفوعة:</strong> <span class="badge bg-success">{{ files_count }} سجل</span></p>
+
+            <h5 class="mt-4 text-secondary">آخر نشاطاتك في النظام:</h5>
+            <ul class="list-group mt-2">
+                {% for log in user_logs %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ log[0] }}</span>
+                        <span class="badge bg-secondary text-light" style="font-size: 11px;">{{ log[1] }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+</body>
+</html>

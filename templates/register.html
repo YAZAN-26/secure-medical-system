@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>إنشاء حساب - النظام الطبي</title>
+    <style>
+        body { font-family: Tahoma, sans-serif; background-color: #f4f7f6; text-align: center; padding: 60px; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); display: inline-block; width: 350px; }
+        input, select { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { background: #2980b9; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 95%; font-size: 15px; }
+        button:hover { background: #1f618d; }
+        a { color: #27ae60; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>إنشاء حساب جديد</h2>
+        <form method="POST">
+            <input type="text" name="username" placeholder="اسم المستخدم" required><br>
+            <input type="password" name="password" placeholder="كلمة المرور" required><br>
+            <select name="role">
+                <option value="Patient">مريض (Patient)</option>
+                <option value="Doctor">طبيب (Doctor)</option>
+            </select><br>
+            <button type="submit">تسجيل الحساب</button>
+        </form>
+        <p style="margin-top: 15px;">لديك حساب بالفعل؟ <a href="/login">تسجيل الدخول</a></p>
+    </div>
+</body>
+</html>
